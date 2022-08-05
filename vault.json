@@ -1,6 +1,6 @@
 {
-  "name": "Moonphaser Koolaid",
-  "termsOfAccess": "Sharing is caring.",
+  "name": "schuyler, the pixiebob",
+  "termsOfAccess": "Normally in a private vault, when we have multiple members, we might want to have an agreement on the terms to access this vault.",
   "owner": {
     "email": "--email--"
   },
@@ -11,5 +11,10 @@
       "accessLevel": "--O/Owner, C/Contributor, V/Viewer--"
     }
   ],
-  "tags": [{ "key": "Organization", "value": "--my organization--" }]
+  "tags": [
+    {
+      "key": "Organization",
+      "value": "--my organization--"
+    }
+  ]
 }

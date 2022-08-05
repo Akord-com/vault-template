@@ -78,7 +78,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
       case "root":
         console.log("🗳", " - Creating Vault (name):", vaultJson.name);
         var vault = await akord.vaultCreate(
-          mockHash(Date.now().toString()) + " " + vaultJson.name,
+          vaultJson.name,
           vaultJson.termsOfAccess
         );
         vaultId = vault.vaultId;

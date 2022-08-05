@@ -1,15 +1,20 @@
 {
-  "name": "Moonphaser Koolaid",
-  "termsOfAccess": "Sharing is caring.",
-  "owner": {
-    "email": "--email--"
-  },
-  "inviteMembers": [
-    {
-      "name": "--name--",
-      "email": "--email--",
-      "accessLevel": "--O/Owner, C/Contributor, V/Viewer--"
-    }
-  ],
-  "tags": [{ "key": "Organization", "value": "--my organization--" }]
+    "name": "triston, the balinese",
+    "termsOfAccess": "Normally in a private vault, when we have multiple members, we might want to have an agreement on the terms to access this vault.",
+    "owner": {
+        "email": "--email--"
+    },
+    "inviteMembers": [
+        {
+            "name": "--name--",
+            "email": "--email--",
+            "accessLevel": "--O/Owner, C/Contributor, V/Viewer--"
+        }
+    ],
+    "tags": [
+        {
+            "key": "Organization",
+            "value": "--my organization--"
+        }
+    ]
 }
