@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "CommonJS",
+    "declaration": true,
+    "outDir": "./lib",
+    "rootDirs": [
+      "scripts"
+    ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "moduleResolution": "Node"
+  },
+  "include": ["scripts", "./vault.json"],
+  "exclude": ["node_modules"]
+}

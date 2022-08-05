@@ -1,0 +1,15 @@
+{
+  "name": "Moonphaser Koolaid",
+  "termsOfAccess": "Sharing is caring.",
+  "owner": {
+    "email": "--email--"
+  },
+  "inviteMembers": [
+    {
+      "name": "--name--",
+      "email": "--email--",
+      "accessLevel": "--O/Owner, C/Contributor, V/Viewer--"
+    }
+  ],
+  "tags": [{ "key": "Organization", "value": "--my organization--" }]
+}
