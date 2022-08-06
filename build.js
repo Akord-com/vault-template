@@ -12,7 +12,7 @@ const download = require("download");
 var vaultJson = require("./vault.json");
 
 // write you vault json back to disk
-const VAULT_JSON = "./build/vault.json";
+const VAULT_JSON = "./vault.json";
 const writeVaultJson = async (vaultJson) => {
   let data = JSON.stringify(vaultJson, null, 2);
   await fs.writeFile(VAULT_JSON, data, (err) => {

@@ -1,12 +1,14 @@
 
 import fs from "fs";
 import path from "path";
-import { vaultJson, AkordFactory, mockHash, getFileFromPath } from "./akord-util.js";
+import { AkordFactory, getFileFromPath } from "./akord-util.js";
 import Akord from "@akord/akord-js";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const yargs = _yargs(hideBin(process.argv));
 import 'dotenv/config'
+
+var vaultJson = null;
 
 // genereates an array of akord nodes types from a directory
 const getNodesForDir = function (dirPath:string, arrayOfFiles:any, originalPath:string, argv?:any) {
@@ -113,16 +115,21 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
 
 (async () => {
   const argv = await yargs
-    .count("verbose")
     .usage("Usage: $0 <command> [options]")
     .command("new", "Push the <folder> to a new vault")
     .example(
-      "$0 new -d ./vault",
-      "push the files/folders in the directory to a new vault"
+      "$0 new -v ./vault.json -d ./vault",
+      "push dir to a new vault"
     )
     .alias("d", "directory")
-    .alias("v", "verbose")
-    .demandOption(["d"]).argv;
+    .alias("v", "vault")
+    .demandOption(["d", "v"]).argv
+
+  console.log(argv);
+
+    // read the vault.json
+    // dynamically load the vault.json from the tmp build folder
+  vaultJson = JSON.parse(fs.readFileSync(argv.vault.toString()).toString());
 
   if (process.env.AKORD_WALLET_EMAIL && process.env.AKORD_WALLET_PASSWORD) {
     console.log("Akord wallet email:", process.env.AKORD_WALLET_EMAIL);

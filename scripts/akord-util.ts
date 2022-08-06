@@ -4,7 +4,6 @@ import Akord from "@akord/akord-js";
 import { AkordWallet } from "@akord/crypto";
 import ApiAuthenticator from "./api-authenticator";
 
-const vaultJson = JSON.parse(fs.readFileSync("./vault.json").toString());
 
 // for mocking up the interface, remove after all is working
 import crypto from "crypto";
@@ -88,4 +87,4 @@ const getNodesForDir = function (dirPath: string, arrayOfFiles?: any, originalPa
   return arrayOfFiles;
 };
 
-export { vaultJson, getNodesForDir, getFileFromPath, AkordFactory, mockHash };
+export {AkordFactory, getNodesForDir, getFileFromPath, mockHash };

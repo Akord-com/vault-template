@@ -8,9 +8,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "node ./build.js",
+    "build": "node ./build.js ",
+    "clean": "rm -rf ./build",
     "watch": "watch 'yarn run build' ./scripts",
-    "deploy": "tsc -p . && node ./build/scripts/akord-sync.js -d ./vault"
+    "push": "tsc -p . && node ./build/scripts/akord-sync.js -v ./build/vault.json -d ./vault",
+    "deploy": "yarn run build && yarn run push"
   },
   "dependencies": {
     "@akord/akord-js": "^0.3.11",
