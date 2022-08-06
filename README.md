@@ -57,12 +57,14 @@ In our project we can find the following files:
 └── vault.json
 ```
 
-Add your the username/password to access your Akord wallet in the `.env` file:
+Add a username/password to access your Akord wallet in the `.env` file:
 
 ```
 cat <<EOT >> .env
+
 AKORD_WALLET_EMAIL="..."
 AKORD_WALLET_PASSWORD="..."
+
 EOT
 ```
 
@@ -79,6 +81,8 @@ The `vault.json` file is where you can set attributes like `name`. We'll use our
 > NOTE: termsOfAccess is an agreement a group can make before allowing access to a private vault. One could list copyright and sharing rights that those who access the vault agree to.
 
 The `vault` folder is where you can add photos and documents to test. When deploying your vault, the script will copy the `vault` folder exactly as is to your vault, ignoring hidden files.
+
+Run this script to generate a note:
 
 ```
 cat <<EOT >> ./vault/demo.note
@@ -109,13 +113,13 @@ Now we're ready to push to the permaweb.
 npm run deploy
 ```
 
-After deployment, you can check out your vault at :
+After deployment, you can open your vault at :
 
 ```
 https://dev.akord.link/vaults/active/{vaultId}/assets
 ```
 
-It may take up to an hour to confirm your transactions on the arweave blockchain, but Akord will hold a cache of the files for your, insuring they are accessible immediately.
+> NOTE: It may take up to an hour to confirm your transactions on the arweave blockchain, but Akord will hold a cache of the files for your, insuring they are accessible immediately.
 
 ## Next steps
 
