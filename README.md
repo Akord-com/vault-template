@@ -1,6 +1,10 @@
-# Vault Template
+# Vault Template SDK
 
-The Vault Template SDK will help you setup and deploy vaults to the permaweb.
+The Akord Protocol provides developers with composable and extensible on storage vaults. The protocols is combined from cryptographic primatives to construct a vault that can be public/private, maintains revision history for files, key rotation for members you join/leave, and much more.
+
+While the Akord Protocol is a web3 project, it can be used with web3 DApps, web2 SaaS platforms, Enterprise back offices, and more.
+
+The Vault Template SDK is a quick start to working with the Akord Protocol and Vaults.
 
 ## Before starting
 
