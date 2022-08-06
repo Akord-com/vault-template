@@ -1,8 +1,10 @@
 # Vault Template SDK
 
-The Akord Protocol provides developers with composable and extensible on storage vaults. The protocols is combined from cryptographic primatives to construct a vault that can be public/private, maintains revision history for files, key rotation for members you join/leave, and much more.
+The Akord Protocol provides developers with composable and extensible on chain storage vaults. The protocol combines cryptographic primatives to construct a vault that can be public/private, maintains revision history for files, key rotation for members you join/leave, and much more.
 
-While the Akord Protocol is a web3 project, it can be used with web3 DApps, web2 SaaS platforms, Enterprise back offices, and more.
+Built on the Arweave blockchain, Akord Vault provides a 'pay up front' option for long term storage the option to be private or public.
+
+Akord Protocol is a Web3 project. It can be used with Web3 DApps, Web2 SaaS platforms, Enterprise back offices, and more.
 
 The Vault Template SDK is a quick start to working with the Akord Protocol and Vaults.
 
@@ -22,7 +24,7 @@ git clone git@github.com:Akord-com/vault-template.git
 After cloning the project to your local disk, create a branch for your demo project:
 
 ```
-git checkout -b demo
+git checkout -b my_first_vault
 ```
 
 This will allow us to work with multiple templates without overwriting the `main` branch.
