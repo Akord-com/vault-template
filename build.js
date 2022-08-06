@@ -1,4 +1,10 @@
 // Your script to automate the vault setup
+//
+// demonstrated below:
+// 1 - load the default vault.json file, make some edits, save to build foler
+// 2 - prepare the vault by downloading some photos
+// 3 - finish by dumping vault.json
+// 4 - ready for deploy
 
 const fs = require("fs");
 const { faker } = require("@faker-js/faker");
@@ -6,7 +12,7 @@ const download = require("download");
 var vaultJson = require("./vault.json");
 
 // write you vault json back to disk
-const VAULT_JSON = "./vault.json";
+const VAULT_JSON = "./build/vault.json";
 const writeVaultJson = async (vaultJson) => {
   let data = JSON.stringify(vaultJson, null, 2);
   await fs.writeFile(VAULT_JSON, data, (err) => {

@@ -2,15 +2,15 @@
   "name": "vault-template",
   "version": "1.0.0",
   "description": "Templates and scripts for creating and deploying new Akord vaults.",
-  "main": "lib/scripts/akord-sync.js",
+  "main": "build/scripts/akord-sync.js",
   "repository": "git@github.com:Akord-com/vault-template.git",
   "author": "Richard Caetano <caetano@gmail.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "node ./build.js",
-    "deploy": "tsc -p . && node ./lib/scripts/akord-sync.js -d ./vault",
-    "watch": "watch 'yarn run build' ./scripts"
+    "watch": "watch 'yarn run build' ./scripts",
+    "deploy": "tsc -p . && node ./build/scripts/akord-sync.js -d ./vault"
   },
   "dependencies": {
     "@akord/akord-js": "^0.3.11",
