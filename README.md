@@ -57,10 +57,6 @@ In our project we can find the following files:
 └── vault.json
 ```
 
-Launching a vault is done in a tree phase workflow:
-
-1. Configure your vault's settings and contents
-
 Add your the username/password to access your Akord wallet in the `.env` file:
 
 ```
@@ -93,7 +89,7 @@ EOT
 
 Files with the .note extension are viewed with Akord's default gallery viewer. It supports markdown and rendering to PDF.
 
-2. Run your build script to automate tasks
+### 3 - Run your build script to automate tasks
 
 Run the build script:
 
@@ -101,41 +97,17 @@ Run the build script:
 npm run build
 ```
 
-In our demo script, we'll generate some random names. You can see the results in the `vault.json` file. In addition, we'll download some photos from unsplash.
+In our demo script, we generated a random name and other data for our vault. You can see the results in the `vault.json` file.
 
-3. Deploy your vault to the permaweb
+In addition, we also downloaded some photos from Unsplash, and should be ready in the `./vault/photos` folder.
 
-We're ready to push to the permaweb.
+### 4 - Deploy your vault to AKord and the Permaweb
+
+Now we're ready to push to the permaweb.
 
 ```
 npm run deploy
 ```
-
-Now log into your Akord account to see vault:
-
-### 2 - Test your build
-
-Test your setup buy running the default build:
-
-```
-npm run build
-```
-
-The default build script will generate random data for the vault.json settings and download a few random photos for your vault.
-
-Feel free to experiment with the demo.
-
-### 3 - Deploy your vault
-
-With our build ready, we can simply deploy our vault:
-
-```
-npm run push
-```
-
-> NOTE: You can run both tasks `build` & `deploy` with `npm run deploy`.
-
-### 3 - Open the vault
 
 After deployment, you can check out your vault at :
 
