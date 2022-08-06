@@ -121,7 +121,7 @@ https://dev.akord.link/vaults/active/{vaultId}/assets
 
 > NOTE: It may take up to an hour to confirm your transactions on the arweave blockchain, but Akord will hold a cache of the files for your, insuring they are accessible immediately.
 
-## Next steps
+## What can you build from here?
 
 Vault Templates are useful for when you want to automate the creation and deployment of your vault.
 
