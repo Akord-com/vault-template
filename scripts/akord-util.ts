@@ -11,6 +11,15 @@ const mockHash = (string) => {
   return crypto.createHash("md5").update(string).digest("hex").slice(0, 4);
 };
 
+const limitString = (filename: string, length?: number) => {
+  if (filename == null) return null;
+  if (!length) length = 10;
+  if (filename.length > length)
+    return filename.slice(0, length / 2) + ".." + filename.slice(length / 2 * -1);
+  else
+    return filename;
+};
+
 const AkordFactory = async ({ email, password }) => {
   const apiAuthenticator = new ApiAuthenticator();
   const jwtToken = await apiAuthenticator.getJWTToken(email, password);
@@ -87,4 +96,4 @@ const getNodesForDir = function (dirPath: string, arrayOfFiles?: any, originalPa
   return arrayOfFiles;
 };
 
-export {AkordFactory, getNodesForDir, getFileFromPath, mockHash };
+export { AkordFactory, getNodesForDir, getFileFromPath, mockHash, limitString };

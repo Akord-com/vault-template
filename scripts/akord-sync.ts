@@ -1,7 +1,7 @@
 
 import fs from "fs";
 import path from "path";
-import { AkordFactory, getFileFromPath } from "./akord-util.js";
+import { AkordFactory, getFileFromPath, limitString } from "./akord-util.js";
 import Akord from "@akord/akord-js";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
@@ -10,8 +10,11 @@ import 'dotenv/config'
 
 var vaultJson = null;
 
-// genereates an array of akord nodes types from a directory
-const getNodesForDir = function (dirPath:string, arrayOfFiles:any, originalPath:string, argv?:any) {
+// maps an array of akord nodes types to each file, recusively, in dirPath
+// arrayOfFiles, carries the list through the recursion
+// originalPath, remembers where we started
+// argv, if we want to pick some flag from command line
+const getNodesForDir = function (dirPath: string, arrayOfFiles: any, originalPath: string, argv?: any) {
   var files = fs.readdirSync(dirPath);
 
   // remember the first entry point
@@ -26,7 +29,7 @@ const getNodesForDir = function (dirPath:string, arrayOfFiles:any, originalPath:
   ];
 
   files.forEach(function (file) {
-    // skip hidden files
+    // skip hidden files, should make this into a cmd flag??
     if (file.slice(0, 1) != ".") {
       if (fs.statSync(dirPath + "/" + file).isDirectory()) {
         // node:folder
@@ -46,17 +49,32 @@ const getNodesForDir = function (dirPath:string, arrayOfFiles:any, originalPath:
           originalPath
         );
       } else {
-        // node:stack
-        var folder = dirPath.slice(originalPath.length);
-        if (folder == "") folder = null;
-        else folder = folder.split("/").slice(-1)[0];
-        arrayOfFiles.push({
-          node: "stack",
-          name: file,
-          file: path.resolve([dirPath, "/", file].join("")),
-          folder: folder,
-          dirPath,
-        });
+        // we have a file, now what kind? stack or note?
+        if (file.slice(-5).toLowerCase() == ".note") {
+          // note
+          var folder = dirPath.slice(originalPath.length);
+          if (folder == "") folder = null;
+          else folder = folder.split("/").slice(-1)[0];
+          arrayOfFiles.push({
+            node: "note",
+            name: file,
+            file: path.resolve([dirPath, "/", file].join("")),
+            folder: folder,
+            dirPath,
+          });
+        } else {
+          // stack
+          var folder = dirPath.slice(originalPath.length);
+          if (folder == "") folder = null;
+          else folder = folder.split("/").slice(-1)[0];
+          arrayOfFiles.push({
+            node: "stack",
+            name: file,
+            file: path.resolve([dirPath, "/", file].join("")),
+            folder: folder,
+            dirPath,
+          });
+        }
       }
     }
   });
@@ -78,39 +96,50 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
   for (const node of nodes) {
     switch (node.node) {
       case "root":
-        console.log("🗳", " - Creating Vault (name):", vaultJson.name);
+        console.log(" 🔐 ", "Creating Vault (name):", vaultJson.name);
         var vault = await akord.vaultCreate(
           vaultJson.name,
           vaultJson.termsOfAccess
         );
         vaultId = vault.vaultId;
-        console.log("Vault ID:", vaultId);
+        console.log("     Vault ID:", vaultId);
         break;
       case "folder":
-        console.log("🗂", " - Creating Folder (name/parent):", node.name, node.parent);
+        console.log(" 📂 ", "Creating Folder (name/parent):", limitString(node.name), node.parent);
         var folder = await akord.folderCreate(
           vaultId,
           node.name,
           parentIdMap[node.parent]
         );
         parentIdMap[node.name] = folder.folderId;
-        console.log("Folder ID:", folder.folderId);
+        console.log("     Folder ID:", folder.folderId);
         break;
-      case "stack": {
-        console.log("📄", " - Creating Stack (name, folder, file)", node.name, node.folder, "..."+node.file.slice(-16));
-        const file = await getFileFromPath(node.file);
+      case "stack":
+        console.log(" 📜 ", "Creating Stack (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
+        const file_to_upload = await getFileFromPath(node.file);
         var stack = await akord.stackCreate(
           vaultId,
-          file,
+          file_to_upload,
           node.name,
           parentIdMap[node.folder]
         );
-        console.log("Stack ID:", stack.stackId);
+        console.log("     Stack ID:", stack.stackId);
         break;
-      }
+      case "note":
+        console.log(" 📝 ", "Creating Note (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
+        const note_to_upload = await getFileFromPath(node.file);
+        var note = await akord.noteCreate(
+          vaultId,
+          node.name,
+          JSON.stringify(note_to_upload.data.toString("utf8")),
+          parentIdMap[node.folder]
+        );
+        console.log("     Note ID:", note.noteId);
+        console.log("     Parent ID:", parentIdMap[node.folder]);
+        break;
     }
-  };
-  if (argv.verbose) console.log(parentIdMap);
+    console.log();
+  }
 };
 
 (async () => {
@@ -125,19 +154,20 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
     .alias("v", "vault")
     .demandOption(["d", "v"]).argv
 
-  console.log(argv);
+  // argv["verbose"] = true
 
-    // read the vault.json
-    // dynamically load the vault.json from the tmp build folder
+  // read the vault.json
+  // dynamically load the vault.json from the tmp build folder
   vaultJson = JSON.parse(fs.readFileSync(argv.vault.toString()).toString());
 
   if (process.env.AKORD_WALLET_EMAIL && process.env.AKORD_WALLET_PASSWORD) {
     console.log("Akord wallet email:", process.env.AKORD_WALLET_EMAIL);
     var akord = await AkordFactory({
-      email:process.env.AKORD_WALLET_EMAIL, 
-      password:process.env.AKORD_WALLET_PASSWORD
+      email: process.env.AKORD_WALLET_EMAIL,
+      password: process.env.AKORD_WALLET_PASSWORD
     });
-    await pushDirToVault(argv.directory, akord, argv);} 
+    await pushDirToVault(argv.directory, akord, argv);
+  }
   else {
     console.error("The .env config file is required with AKORD_WALLET_EMAIL and AKORD_WALLET_PASSWORD variables");
   }

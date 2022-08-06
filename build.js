@@ -24,12 +24,12 @@ const writeVaultJson = async (vaultJson) => {
 // actual start of our build script
 (async () => {
   // do something with your vault settings
-  vaultJson.name = [faker.name.firstName(), ", the ", faker.animal.cat()]
+  var randomName = [faker.name.firstName(), ", the ", faker.animal.cat()]
     .join("")
     .toLowerCase();
-  vaultJson.termsOfAccess =
-    "Normally in a private vault, when we have multiple members, " +
-    "we might want to have an agreement on the terms to access this vault.";
+  randomName = randomName.slice(0, 1).toUpperCase() + randomName.slice(1);
+  vaultJson.name = randomName;
+  vaultJson.termsOfAccess = "Enjoy this demo vault!";
 
   // write back your vault.json
   await writeVaultJson(vaultJson);
@@ -40,7 +40,7 @@ const writeVaultJson = async (vaultJson) => {
     console.log("Downloading file...");
     fs.writeFileSync(
       `./vault/photos/photo-${Date.now()}.jpg`,
-      await download("https://source.unsplash.com/random?" + faker.word.noun())
+      await download("https://source.unsplash.com/random?avila+beach")
     );
   }
 
