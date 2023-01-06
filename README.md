@@ -1,9 +1,5 @@
 # Vault Template SDK
 
-> NOTE: The Akord API is in 'Developer Preview Release'. All functions from the vault-template will run from Akord's dev environment while the protocol and its data is on arweave mainnet.
->
-> To access the dev : https://dev.akord.link/
-
 The Akord Protocol provides developers with composable and extensible, on-chain storage vaults. The protocol combines cryptographic primatives to construct a vault that can be public/private, maintains revision history for files, key rotation for members who join/leave, and much more.
 
 Built on the Arweave blockchain, Akord Vault provides a 'pay up front' option for long term storage with the option to be private or public.
@@ -14,7 +10,7 @@ The Vault Template SDK is a quick start for working with the Akord Protocol and 
 
 ## Before starting
 
-- Setup an Akord Wallet at https://dev.akord.link/
+- Setup an Akord Wallet at https://v2.akord.com/
 - Setup and install Node (16+) along with npm or yarn
 
 ## Deploying our first vault
@@ -105,7 +101,7 @@ In our demo script, we generated a random name and other data for our vault. You
 
 In addition, we also downloaded some photos from Unsplash, and should be ready in the `./vault/photos` folder.
 
-### 4 - Deploy your vault to AKord and the Permaweb
+### 4 - Deploy your vault to Akord and the Permaweb
 
 Now we're ready to push to the permaweb.
 
@@ -116,7 +112,7 @@ npm run deploy
 After deployment, you can open your vault at :
 
 ```
-https://dev.akord.link/vaults/active/{vaultId}/assets
+https://v2.akord.com//vaults/active/{vaultId}/assets
 ```
 
 > NOTE: It may take up to an hour to confirm your transactions on the arweave blockchain, but Akord will hold a cache of the files for your, insuring they are accessible immediately.

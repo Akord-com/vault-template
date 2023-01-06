@@ -1,9 +1,5 @@
 import fs from "fs";
 import path from "path";
-import Akord from "@akord/akord-js";
-import { AkordWallet } from "@akord/crypto";
-import ApiAuthenticator from "./api-authenticator";
-
 
 // for mocking up the interface, remove after all is working
 import crypto from "crypto";
@@ -18,20 +14,6 @@ const limitString = (filename: string, length?: number) => {
     return filename.slice(0, length / 2) + ".." + filename.slice(length / 2 * -1);
   else
     return filename;
-};
-
-const AkordFactory = async ({ email, password }) => {
-  const apiAuthenticator = new ApiAuthenticator();
-  const jwtToken = await apiAuthenticator.getJWTToken(email, password);
-  const userAttributes = await apiAuthenticator.getUserAttributes(
-    email,
-    password
-  );
-  const wallet = await AkordWallet.importFromEncBackupPhrase(
-    password,
-    userAttributes["custom:encBackupPhrase"]
-  );
-  return new Akord({}, wallet, jwtToken);
 };
 
 const getFileFromPath = function (filePath: string) {
@@ -96,4 +78,4 @@ const getNodesForDir = function (dirPath: string, arrayOfFiles?: any, originalPa
   return arrayOfFiles;
 };
 
-export { AkordFactory, getNodesForDir, getFileFromPath, mockHash, limitString };
+export { getNodesForDir, getFileFromPath, mockHash, limitString };

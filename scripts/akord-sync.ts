@@ -1,8 +1,8 @@
 
 import fs from "fs";
 import path from "path";
-import { AkordFactory, getFileFromPath, limitString } from "./akord-util.js";
-import Akord from "@akord/akord-js";
+import { getFileFromPath, limitString } from "./akord-util.js";
+import { Akord } from "@akord/akord-js";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const yargs = _yargs(hideBin(process.argv));
@@ -97,7 +97,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
     switch (node.node) {
       case "root":
         console.log(" 🔐 ", "Creating Vault (name):", vaultJson.name);
-        var vault = await akord.vaultCreate(
+        var vault = await akord.vault.create(
           vaultJson.name,
           vaultJson.termsOfAccess
         );
@@ -106,7 +106,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
         break;
       case "folder":
         console.log(" 📂 ", "Creating Folder (name/parent):", limitString(node.name), node.parent);
-        var folder = await akord.folderCreate(
+        var folder = await akord.folder.create(
           vaultId,
           node.name,
           parentIdMap[node.parent]
@@ -117,7 +117,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
       case "stack":
         console.log(" 📜 ", "Creating Stack (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
         const file_to_upload = await getFileFromPath(node.file);
-        var stack = await akord.stackCreate(
+        var stack = await akord.stack.create(
           vaultId,
           file_to_upload,
           node.name,
@@ -128,7 +128,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
       case "note":
         console.log(" 📝 ", "Creating Note (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
         const note_to_upload = await getFileFromPath(node.file);
-        var note = await akord.noteCreate(
+        var note = await akord.note.create(
           vaultId,
           node.name,
           JSON.stringify(note_to_upload.data.toString("utf8")),
@@ -162,10 +162,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
 
   if (process.env.AKORD_WALLET_EMAIL && process.env.AKORD_WALLET_PASSWORD) {
     console.log("Akord wallet email:", process.env.AKORD_WALLET_EMAIL);
-    var akord = await AkordFactory({
-      email: process.env.AKORD_WALLET_EMAIL,
-      password: process.env.AKORD_WALLET_PASSWORD
-    });
+    const { akord } = await Akord.auth.signIn(process.env.AKORD_WALLET_EMAIL, process.env.AKORD_WALLET_PASSWORD);
     await pushDirToVault(argv.directory, akord, argv);
   }
   else {
