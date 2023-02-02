@@ -16,19 +16,6 @@ const limitString = (filename: string, length?: number) => {
     return filename;
 };
 
-const getFileFromPath = function (filePath: string) {
-  let file = <any>{};
-  if (!fs.existsSync(filePath)) {
-    console.error("Could not find a file in your filesystem: " + filePath);
-    process.exit(0);
-  }
-  const stats = fs.statSync(filePath);
-  file.size = stats.size;
-  file.data = fs.readFileSync(filePath);
-  file.name = path.basename(filePath);
-  return file;
-}
-
 // genereates an array of akord nodes types from a directory
 const getNodesForDir = function (dirPath: string, arrayOfFiles?: any, originalPath?: string) {
   var files = fs.readdirSync(dirPath);
@@ -78,4 +65,4 @@ const getNodesForDir = function (dirPath: string, arrayOfFiles?: any, originalPa
   return arrayOfFiles;
 };
 
-export { getNodesForDir, getFileFromPath, mockHash, limitString };
+export { getNodesForDir, mockHash, limitString };

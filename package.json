@@ -15,20 +15,20 @@
     "deploy": "yarn run build && yarn run push"
   },
   "dependencies": {
-    "@akord/akord-js": "2.2.0",
+    "@akord/akord-js": "2.11.0",
     "@faker-js/faker": "^7.3.0",
     "dotenv": "^16.0.1",
     "download": "^8.0.0",
     "fs": "^0.0.1-security",
     "watch": "^1.0.2",
-    "yargs": "^17.5.1"
+    "yargs": "17.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.12.1",
     "@types/node": "^14.0.13",
-    "@types/yargs": "^17.0.11",
+    "@types/yargs": "17.0.11",
     "eslint": "^8.0.0",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"

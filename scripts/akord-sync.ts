@@ -1,8 +1,9 @@
 
 import fs from "fs";
 import path from "path";
-import { getFileFromPath, limitString } from "./akord-util.js";
+import { limitString } from "./akord-util.js";
 import { Akord } from "@akord/akord-js";
+import { NodeJs } from "@akord/akord-js/lib/types/file";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 const yargs = _yargs(hideBin(process.argv));
@@ -116,7 +117,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
         break;
       case "stack":
         console.log(" 📜 ", "Creating Stack (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
-        const file_to_upload = await getFileFromPath(node.file);
+        const file_to_upload = NodeJs.File.fromPath(node.file);
         var stack = await akord.stack.create(
           vaultId,
           file_to_upload,
@@ -127,11 +128,11 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
         break;
       case "note":
         console.log(" 📝 ", "Creating Note (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
-        const note_to_upload = await getFileFromPath(node.file);
+        const note_to_upload = NodeJs.File.fromPath(node.file);
         var note = await akord.note.create(
           vaultId,
+          await note_to_upload.text(),
           node.name,
-          JSON.stringify(note_to_upload.data.toString("utf8")),
           parentIdMap[node.folder]
         );
         console.log("     Note ID:", note.noteId);
