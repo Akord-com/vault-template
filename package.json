@@ -12,14 +12,17 @@
     "clean": "rm -rf ./build",
     "watch": "watch 'yarn run build' ./scripts",
     "push": "tsc -p . && node ./build/scripts/akord-sync.js -v ./build/vault.json -d ./vault",
-    "deploy": "yarn run build && yarn run push"
+    "deploy": "yarn run build && yarn run push",
+    "arweave-import": "tsc -p . && node ./build/scripts/arweave/import.js"
   },
   "dependencies": {
-    "@akord/akord-js": "2.11.0",
+    "@akord/akord-js": "2.13.0",
     "@faker-js/faker": "^7.3.0",
     "dotenv": "^16.0.1",
     "download": "^8.0.0",
     "fs": "^0.0.1-security",
+    "graphql": "15.7.0",
+    "graphql-request": "4.3.0",
     "watch": "^1.0.2",
     "yargs": "17.5.1"
   },

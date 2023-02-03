@@ -8,6 +8,11 @@ Akord Protocol is a Web3 project. It can be used with Web3 DApps, Web2 SaaS plat
 
 The Vault Template SDK is a quick start for working with the Akord Protocol and Vaults.
 
+- [Before starting](#before-starting)
+- [Deploying our first vault](#deploying-our-first-vault)
+- [What can you build from here](#what-can-you-build-from-here)
+- [Little extra](#little-extra)
+
 ## Before starting
 
 - Setup an Akord Wallet at https://v2.akord.com/
@@ -130,3 +135,25 @@ Here are some directions you can take it:
 For questions and feedback, join our discord: https://discord.gg/YQVAyhFgAn
 
 Enjoy 🌟
+
+## Little extra
+
+### Importing files published with an Arweave address into an Akord Vault
+
+#### Configuration
+The following config env variables are required:
+
+`AKORD_WALLET_EMAIL`\
+`AKORD_WALLET_PASSWORD`\
+`ARWEAVE_ADDRESS` - arweave address to import files from
+
+#### Import your arweave files to Akord
+First run
+```
+yarn install
+```
+
+Then
+```
+yarn arweave-import
+```
