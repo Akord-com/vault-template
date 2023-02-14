@@ -8,11 +8,17 @@ const executeQuery = async function (query: any, variables: any) {
 };
 
 const getTransactionsByAddress = async function (address: string): Promise<Array<string>> {
-  const result = await executeQuery(transactionsByOwnerQuery, { address });
-  let transactions = []
-  for (let edge of result?.transactions.edges) {
-    transactions.push(edge.node.id);
-  }
+  let nextToken = null;
+  let hasNextPage = true;
+  let transactions = [];
+  do {
+    const result = await executeQuery(transactionsByOwnerQuery, { address, nextToken });
+    for (let edge of result?.transactions.edges) {
+      transactions.push(edge.node.id);
+      nextToken = edge.cursor;
+    }
+    hasNextPage = result?.transactions.pageInfo.hasNextPage;
+  } while (hasNextPage);
   return transactions;
 }
 
