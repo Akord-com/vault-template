@@ -1,6 +1,6 @@
 
 import { Akord } from "@akord/akord-js";
-import _yargs from "yargs";
+import { getTxMetadata } from "@akord/akord-js/lib/arweave";
 import 'dotenv/config'
 import { getTransactionsByAddress } from "./transactions";
 
@@ -12,19 +12,21 @@ const importFilesToVault = async (akord: Akord, vaultName: string) => {
   console.log("     Vault ID:", vaultId);
   const fileIds = await getTransactionsByAddress(process.env.ARWEAVE_ADDRESS);
   for (const fileTxId of fileIds) {
-    const name = "Arweave-" + fileTxId;
-    console.log(" 📜 ", "Creating Stack (name, fileId)", name, fileTxId);
+    console.log(" 📜 ", "Creating Stack for transaction: " + fileTxId);
     try {
-      const { stackId } = await akord.stack.import(
-        vaultId,
-        fileTxId,
-        name);
-      console.log("     Stack ID:", stackId);
+      const fileMetadata = await getTxMetadata(fileTxId);
+      if (fileMetadata?.data?.type && fileMetadata?.data?.size > 0) {
+        const { stackId } = await akord.stack.import(vaultId, fileTxId);
+        console.log("     Stack ID:", stackId);
+      } else {
+        console.log("Transaction " + fileTxId + " does not contain any data. Skipping...");
+      }
     } catch (error) {
       console.log("Oops, failed creating new stack for file transaction with id: " + fileTxId + ". Skipping...");
+      console.log(error);
     }
   }
-  console.log("success  importing files from Arweave for address: " + address);
+  console.log("success importing files from Arweave for address: " + address);
 }
 
 (async () => {
@@ -32,7 +34,7 @@ const importFilesToVault = async (akord: Akord, vaultName: string) => {
     console.log("Akord wallet email:", process.env.AKORD_WALLET_EMAIL);
     console.log("Arweave address:", process.env.ARWEAVE_ADDRESS);
     const { akord } = await Akord.auth.signIn(process.env.AKORD_WALLET_EMAIL, process.env.AKORD_WALLET_PASSWORD);
-    await importFilesToVault(akord, "My new vault");
+    await importFilesToVault(akord, "Arweave import");
   } else {
     console.error("The .env config file is required with AKORD_WALLET_EMAIL, AKORD_WALLET_PASSWORD & ARWEAVE_ADDRESS variables");
   }
