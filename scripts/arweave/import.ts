@@ -11,6 +11,9 @@ const importFilesToVault = async (akord: Akord, vaultName: string) => {
   const { vaultId } = await akord.vault.create(vaultName);
   console.log("     Vault ID:", vaultId);
   const fileIds = await getTransactionsByAddress(process.env.ARWEAVE_ADDRESS);
+  let i = 0;
+  console.log("Found " + fileIds.length + " arweave transactions...");
+  const failedTxs = [];
   for (const fileTxId of fileIds) {
     console.log(" 📜 ", "Creating Stack for transaction: " + fileTxId);
     try {
@@ -18,15 +21,20 @@ const importFilesToVault = async (akord: Akord, vaultName: string) => {
       if (fileMetadata?.data?.type && fileMetadata?.data?.size > 0) {
         const { stackId } = await akord.stack.import(vaultId, fileTxId);
         console.log("     Stack ID:", stackId);
+        i = i + 1;
       } else {
         console.log("Transaction " + fileTxId + " does not contain any data. Skipping...");
       }
     } catch (error) {
       console.log("Oops, failed creating new stack for file transaction with id: " + fileTxId + ". Skipping...");
-      console.log(error);
+      failedTxs.push(fileTxId);
     }
   }
-  console.log("success importing files from Arweave for address: " + address);
+  console.log(i + " files were imported successfully to an Akord Vault.");
+  if (failedTxs.length > 0) {
+    console.log("Here's the list of transaction ids that import failed:");
+    console.log(failedTxs);
+  }
 }
 
 (async () => {
