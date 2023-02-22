@@ -16,7 +16,7 @@
     "arweave-import": "tsc -p . && node ./build/scripts/arweave/import.js"
   },
   "dependencies": {
-    "@akord/akord-js": "3.7.0",
+    "@akord/akord-js": "3.7.3",
     "@faker-js/faker": "^7.3.0",
     "dotenv": "^16.0.1",
     "download": "^8.0.0",
