@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { limitString } from "./akord-util.js";
-import { Akord } from "@akord/akord-js";
+import { Auth, Akord } from "@akord/akord-js";
 import { NodeJs } from "@akord/akord-js/lib/types/file";
 import _yargs from "yargs";
 import { hideBin } from "yargs/helpers";
@@ -100,7 +100,7 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
         console.log(" 🔐 ", "Creating Vault (name):", vaultJson.name);
         var vault = await akord.vault.create(
           vaultJson.name,
-          vaultJson.termsOfAccess
+          { termsOfAccess: vaultJson.termsOfAccess }
         );
         vaultId = vault.vaultId;
         console.log("     Vault ID:", vaultId);
@@ -110,30 +110,30 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
         var folder = await akord.folder.create(
           vaultId,
           node.name,
-          parentIdMap[node.parent]
+          { parentId: parentIdMap[node.parent] }
         );
         parentIdMap[node.name] = folder.folderId;
         console.log("     Folder ID:", folder.folderId);
         break;
       case "stack":
         console.log(" 📜 ", "Creating Stack (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
-        const file_to_upload = NodeJs.File.fromPath(node.file);
+        const file_to_upload = await NodeJs.File.fromPath(node.file);
         var stack = await akord.stack.create(
           vaultId,
           file_to_upload,
           node.name,
-          parentIdMap[node.folder]
+          { parentId: parentIdMap[node.folder] }
         );
         console.log("     Stack ID:", stack.stackId);
         break;
       case "note":
         console.log(" 📝 ", "Creating Note (name, folder, file)", limitString(node.name), limitString(node.folder), limitString(node.file));
-        const note_to_upload = NodeJs.File.fromPath(node.file);
+        const note_to_upload = await NodeJs.File.fromPath(node.file);
         var note = await akord.note.create(
           vaultId,
           await note_to_upload.text(),
           node.name,
-          parentIdMap[node.folder]
+          { parentId: parentIdMap[node.folder] }
         );
         console.log("     Note ID:", note.noteId);
         console.log("     Parent ID:", parentIdMap[node.folder]);
@@ -163,7 +163,8 @@ const pushDirToVault = async (directory: any, akord: Akord, argv?: any) => {
 
   if (process.env.AKORD_WALLET_EMAIL && process.env.AKORD_WALLET_PASSWORD) {
     console.log("Akord wallet email:", process.env.AKORD_WALLET_EMAIL);
-    const { akord } = await Akord.auth.signIn(process.env.AKORD_WALLET_EMAIL, process.env.AKORD_WALLET_PASSWORD);
+    const { wallet } = await Auth.signIn(process.env.AKORD_WALLET_EMAIL, process.env.AKORD_WALLET_PASSWORD);
+    const akord = await Akord.init(wallet);
     await pushDirToVault(argv.directory, akord, argv);
   }
   else {
